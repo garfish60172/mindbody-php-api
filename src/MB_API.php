@@ -2,19 +2,19 @@
 namespace DevinCrossman\Mindbody;
 class MB_API {
 	protected $client;
+
 	protected $sourceCredentials = array(
 		"SourceName"=>'REPLACE_WITH_YOUR_SOURCENAME', 
 		"Password"=>'REPLACE_WITH_YOUR_PASSWORD', 
 		"SiteIDs"=>array('REPLACE_WITH_YOUR_SITE_ID')
 	);
-	/*
-	** Uncomment if you need user credentials
+
 	protected $userCredentials = array(
 		"Username"=>'REPLACE_WITH_YOUR_USERNAME', 
 		"Password"=>'REPLACE_WITH_YOUR_PASSWORD', 
 		"SiteIDs"=>array('REPLACE_WITH_YOUR_SITE_ID')
 	);
-	*/
+
 	protected $appointmentServiceWSDL = "https://api.mindbodyonline.com/0_5/AppointmentService.asmx?WSDL";
 	protected $classServiceWSDL = "https://api.mindbodyonline.com/0_5/ClassService.asmx?WSDL";
 	protected $clientServiceWSDL = "https://api.mindbodyonline.com/0_5/ClientService.asmx?WSDL";
@@ -33,7 +33,7 @@ class MB_API {
 	/*
 	** initializes the apiServices and apiMethods arrays
 	*/
-	public function __construct($sourceCredentials = array()) {
+	public function __construct($sourceCredentials = array(), $userCredentials = array()) {
 		// set apiServices array with Mindbody WSDL locations
 		$this->apiServices = array(
 			'AppointmentService' => $this->appointmentServiceWSDL,
@@ -70,6 +70,23 @@ class MB_API {
 					$this->sourceCredentials['SiteIDs'] = $sourceCredentials['SiteIDs'];
 				} else if(is_numeric($sourceCredentials['SiteIDs'])) {
 					$this->sourceCredentials['SiteIDs'] = array($sourceCredentials['SiteIDs']);
+				}
+			}
+		}
+
+		// set userCredentials
+		if(!empty($userCredentials)) {
+			if(!empty($userCredentials['Username'])) {
+				$this->userCredentials['Username'] = $userCredentials['Username'];
+			}
+			if(!empty($userCredentials['Password'])) {
+				$this->userCredentials['Password'] = $userCredentials['Password'];
+			}
+			if(!empty($userCredentials['SiteIDs'])) {
+				if(is_array($userCredentials['SiteIDs'])) {
+					$this->userCredentials['SiteIDs'] = $userCredentials['SiteIDs'];
+				} else if(is_numeric($userCredentials['SiteIDs'])) {
+					$this->userCredentials['SiteIDs'] = array($userCredentials['SiteIDs']);
 				}
 			}
 		}
